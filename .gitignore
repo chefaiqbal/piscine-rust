@@ -2,6 +2,5 @@ debug/
 target/
 /target
 Cargo.lock
-Cargo.toml
 temperature_conv/src/main.rs
 speed_transformation/src/main.rs
