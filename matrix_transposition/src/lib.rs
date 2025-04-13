@@ -1,10 +1,10 @@
-#[derive(Debug)]
+#[derive(Debug,PartialEq,Eq)]
 pub struct Matrix(pub (i32, i32), pub (i32, i32));
 
 pub fn transpose(m: Matrix) -> Matrix {
     let row1 = m.0;
     let row2 = m.1;
-    Matrix((row1.0, row2.0), (row1.1, row2.1))
+    Matrix((row1.0,row2.0),(row1.1, row2.1))
 }
 
 /*
