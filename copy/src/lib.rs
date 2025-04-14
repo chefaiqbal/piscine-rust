@@ -1,5 +1,5 @@
 pub fn nbr_function(c: i32) -> (i32, f64, f64) {
-    let exp_c = (c as f64).exp(); // Calculate e^c
+    let exp_c = (c as f64).exp();
     let ln_c = if c == 0 {
         f64::NEG_INFINITY
     } else {
