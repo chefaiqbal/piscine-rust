@@ -1,4 +1,7 @@
-use std::{error::Error, fmt};
+use std::{
+    error::Error,
+    fmt::{self, Display},
+};
 
 #[derive(Debug)]
 pub enum ParseErr {
@@ -6,21 +9,9 @@ pub enum ParseErr {
     Malformed(Box<dyn Error>),
 }
 
-impl fmt::Display for ParseErr {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            ParseErr::Empty => write!(f, "Failed to parse todo file"),
-            ParseErr::Malformed(_) => write!(f, "Failed to parse todo file"),
-        }
-    }
-}
-
-impl Error for ParseErr {
-    fn source(&self) -> Option<&(dyn Error + 'static)> {
-        match self {
-            ParseErr::Empty => None,
-            ParseErr::Malformed(err) => Some(&**err),
-        }
+impl Display for ParseErr {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "Failed to parse todo file")
     }
 }
 
@@ -29,14 +20,23 @@ pub struct ReadErr {
     pub child_err: Box<dyn Error>,
 }
 
-impl fmt::Display for ReadErr {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+impl Display for ReadErr {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "Failed to read todo file")
+    }
+}
+
+impl Error for ParseErr {
+    fn source(&self) -> Option<&(dyn Error + 'static)> {
+        match &self {
+            ParseErr::Empty => None,
+            _ => Some(self),
+        }
     }
 }
 
 impl Error for ReadErr {
     fn source(&self) -> Option<&(dyn Error + 'static)> {
-        Some(&*self.child_err)
+        Some(self.child_err.as_ref())
     }
 }

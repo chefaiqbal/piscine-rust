@@ -1,8 +1,8 @@
 mod err;
-
 pub use err::{ParseErr, ReadErr};
-pub use json::JsonValue;
-pub use std::{error::Error, fs, path::Path};
+
+use std::error::Error;
+use std::fs;
 
 #[derive(Debug, Eq, PartialEq)]
 pub struct Task {
@@ -19,43 +19,28 @@ pub struct TodoList {
 
 impl TodoList {
     pub fn get_todo(path: &str) -> Result<TodoList, Box<dyn Error>> {
-        let content = fs::read_to_string(Path::new(path))
-            .map_err(|e| Box::new(ReadErr { child_err: Box::new(e) }) as Box<dyn Error>)?;
+        let contents = fs::read_to_string(path).map_err(|e| ReadErr {
+            child_err: Box::new(e),
+        })?;
 
-        let parsed = json::parse(&content)
-            .map_err(|e| Box::new(ParseErr::Malformed(Box::new(e))) as Box<dyn Error>)?;
-
-        let title = parsed["title"]
-            .as_str()
-            .ok_or_else(|| Box::new(ParseErr::Malformed("Missing title".into())) as Box<dyn Error>)?
-            .to_string();
-
-        let tasks = parsed["tasks"]
-            .members()
-            .map(|task| {
-                Ok(Task {
-                    id: task["id"]
-                        .as_u32()
-                        .ok_or_else(|| Box::new(ParseErr::Malformed("Invalid task id".into())) as Box<dyn Error>)?,
-                    description: task["description"]
-                        .as_str()
-                        .ok_or_else(|| Box::new(ParseErr::Malformed("Invalid task description".into())) as Box<dyn Error>)?
-                        .to_string(),
-                    level: task["level"]
-                        .as_u32()
-                        .ok_or_else(|| Box::new(ParseErr::Malformed("Invalid task level".into())) as Box<dyn Error>)?,
-                })
-            })
-            .collect::<Result<Vec<Task>, Box<dyn Error>>>()?;
-
-        if tasks.is_empty() {
-            return Err(Box::new(ParseErr::Empty));
+        let contents = json::parse(&contents).map_err(|e| ParseErr::Malformed(Box::new(e)))?;
+        if contents["tasks"].is_empty() {
+            return Err(ParseErr::Empty.into());
         }
 
-        Ok(TodoList { title, tasks })
+        Ok(Self {
+            title: contents["title"].as_str().unwrap().to_owned(),
+            tasks: contents["tasks"]
+                .members()
+                .map(|m| Task {
+                    id: m["id"].as_u32().unwrap(),
+                    description: m["description"].as_str().unwrap().to_owned(),
+                    level: m["level"].as_u32().unwrap(),
+                })
+                .collect(),
+        })
     }
 }
-
 
 /*
 Instructions
