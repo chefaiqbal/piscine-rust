@@ -79,6 +79,8 @@ impl Floor {
     }
 }
 
+
+
 #[derive(Debug, Clone, PartialEq)]
 pub struct Store {
     pub employees: HashMap<String, Employee>,
