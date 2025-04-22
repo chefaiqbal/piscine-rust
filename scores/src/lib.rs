@@ -19,6 +19,7 @@ pub fn score(input: &str) -> u64 {
         .chars() 
         .filter_map(|c| letter_values.get(&c)) 
         .sum() 
+}
 
 
 /*
