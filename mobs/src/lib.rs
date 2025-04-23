@@ -2,13 +2,13 @@ pub mod mobs;
 
 #[cfg(test)]
 mod tests {
-    //use super::*;
+    use mobs::*;
 
     #[test]
     fn create_boss() {
         assert_eq!(
-            crate::mobs::Boss::new("Scarface", 43),
-            crate::mobs::Boss {
+            Boss::new("Scarface", 43),
+            Boss {
                 name: "Scarface".to_owned(),
                 age: 43
             }
@@ -16,38 +16,38 @@ mod tests {
     }
 
     #[inline]
-    fn mobs() -> (crate::mobs::Mob, crate::mobs::Mob) {
+    fn mobs() -> (Mob, Mob) {
         (
-            crate::mobs::Mob {
+            Mob {
                 name: "Hairy Giants".to_owned(),
-                boss: crate::mobs::Boss::new("Louie HaHa", 36),
+                boss: Boss::new("Louie HaHa", 36),
                 cities: ["San Francisco"].map(str::to_owned).into(),
                 members: [
                     (
                         "Benny Eggs",
-                        crate::mobs::Member {
-                            role: crate::mobs::Role::Soldier,
+                        Member {
+                            role: Role::Soldier,
                             age: 28,
                         },
                     ),
                     (
                         "Jhonny",
-                        crate::mobs::Member {
-                            role: crate::mobs::Role::Associate,
+                        Member {
+                            role: Role::Associate,
                             age: 17,
                         },
                     ),
                     (
                         "Greasy Thumb",
-                        crate::mobs::Member {
-                            role: crate::mobs::Role::Soldier,
+                        Member {
+                            role: Role::Soldier,
                             age: 30,
                         },
                     ),
                     (
                         "No Finger",
-                        crate::mobs::Member {
-                            role: crate::mobs::Role::Caporegime,
+                        Member {
+                            role: Role::Caporegime,
                             age: 32,
                         },
                     ),
@@ -56,29 +56,29 @@ mod tests {
                 .into(),
                 wealth: 100000,
             },
-            crate::mobs::Mob {
+            Mob {
                 name: "Red Thorns".to_owned(),
-                boss: crate::mobs::Boss::new("Big Tuna", 30),
+                boss: Boss::new("Big Tuna", 30),
                 cities: ["San Jose"].map(str::to_owned).into(),
                 members: [
                     (
                         "Knuckles",
-                        crate::mobs::Member {
-                            role: crate::mobs::Role::Soldier,
+                        Member {
+                            role: Role::Soldier,
                             age: 25,
                         },
                     ),
                     (
                         "Baldy Dom",
-                        crate::mobs::Member {
-                            role: crate::mobs::Role::Caporegime,
+                        Member {
+                            role: Role::Caporegime,
                             age: 36,
                         },
                     ),
                     (
                         "Crazy Joe",
-                        crate::mobs::Member {
-                            role: crate::mobs::Role::Underboss,
+                        Member {
+                            role: Role::Underboss,
                             age: 23,
                         },
                     ),
@@ -97,8 +97,8 @@ mod tests {
 
         assert_eq!(
             mob.members.get("Rusty"),
-            Some(&crate::mobs::Member {
-                role: crate::mobs::Role::Associate,
+            Some(&Member {
+                role: Role::Associate,
                 age: 37,
             })
         );
@@ -107,8 +107,8 @@ mod tests {
 
         assert_eq!(
             mob.members.get("Pedro"),
-            Some(&crate::mobs::Member {
-                role: crate::mobs::Role::Associate,
+            Some(&Member {
+                role: Role::Associate,
                 age: 14,
             })
         );
@@ -121,9 +121,9 @@ mod tests {
         let member = mob.members.get_mut("Benny Eggs").unwrap();
 
         member.get_promotion();
-        assert_eq!(member.role, crate::mobs::Role::Caporegime);
+        assert_eq!(member.role, Role::Caporegime);
         member.get_promotion();
-        assert_eq!(member.role, crate::mobs::Role::Underboss);
+        assert_eq!(member.role, Role::Underboss);
     }
 
     #[test]
