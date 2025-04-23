@@ -29,7 +29,7 @@ impl Member {
             Role::Associate => Role::Soldier,
             Role::Soldier => Role::Caporegime,
             Role::Caporegime => Role::Underboss,
-            Role::Underboss => panic!("Cannot promote beyond Underboss!"),
-        };
+            Role::Underboss => panic!("Cannot promote beyond Underboss"),
+        }
     }
 }

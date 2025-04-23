@@ -6,7 +6,7 @@ pub struct Boss {
 
 impl Boss {
     pub fn new(name: &str, age: u32) -> Self {
-        Self {
+        Boss {
             name: name.to_string(),
             age,
         }
