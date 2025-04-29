@@ -1,28 +1,26 @@
 #[derive(Clone, Debug)]
 pub struct List<T> {
-    pub head: Option<Box<Node<T>>>, 
+    pub head: Option<Box<Node<T>>>,
 }
 
 #[derive(Clone, Debug)]
 pub struct Node<T> {
-    pub value: T,                  
-    pub next: Option<Box<Node<T>>>, 
+    pub value: T,
+    pub next: Option<Box<Node<T>>>,
 }
 
 impl<T> List<T> {
-
     pub fn new() -> List<T> {
         List { head: None }
     }
 
     pub fn push(&mut self, value: T) {
-        let new_node = Node {
+        let new_node = Box::new(Node {
             value,
-            next: self.head.take(), 
-        };
-        self.head = Some(Box::new(new_node)); 
+            next: self.head.take(),
+        });
+        self.head = Some(new_node);
     }
-
 
     pub fn pop(&mut self) {
         if let Some(node) = self.head.take() {
@@ -30,19 +28,19 @@ impl<T> List<T> {
         }
     }
 
-  
     pub fn len(&self) -> usize {
         let mut count = 0;
-        let mut current = &self.head;
+        let mut current = self.head.as_ref();
 
         while let Some(node) = current {
             count += 1;
-            current = &node.next; 
+            current = node.next.as_ref();
         }
 
         count
     }
 }
+//
 /*
 Instructions
 
@@ -110,4 +108,6 @@ The size of the list is 3
 The size of the list is 2
 $
 
+
+C
 */
