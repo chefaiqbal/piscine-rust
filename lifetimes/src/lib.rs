@@ -1,14 +1,14 @@
 #[derive(Debug)]
 pub struct Person<'a> {
 	pub name: &'a str,
-	pub age:&'a u8,
+	pub age: u8,
 }
 
 impl <'a> Person<'a>{
 	pub fn new(name: &'a str) -> Person<'a> {
         Person {
             name,
-            age: &0,
+            age: 0,
         }
 	}
 }
