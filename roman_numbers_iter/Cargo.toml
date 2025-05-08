@@ -1,0 +1,7 @@
+[package]
+name = "roman_numbers_iter"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+roman_numbers = { path = "../roman_numbers"}
